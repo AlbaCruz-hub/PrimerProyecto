@@ -1,13 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use APP\Http\Controllers\HomeController;
-use APP\Http\Controllers\PostController;
-use APP\Http\Controllers\PrincipalController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\PrincipalController;
 
 /*Route::get('/', function () {
-    return view('welcome');  }); */
+    return view('welcome');
+});*/
 
- Route::get('/hello', HomeController::class);
-
-
+Route::get('/hello',HomeController::class);
+Route::get('post/mensaje',[PostController::class, 'Mensaje']);
+Route::get('post/about/{param?}/{name?}', [PostController::class, 'About']);
+Route::get('/empresa',[HomeController::class,'empresa'])->name('empresa');
