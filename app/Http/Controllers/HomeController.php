@@ -26,6 +26,17 @@ class HomeController extends Controller
         return view('empresa', $datos);
     }
 
+public function update(Request $request){
+    $usuarios = new Pagina();
+    $respuesta = $usuarios->BuscarId($request->id);
 
+    if(!empty($respuesta)){
+        $respuesta->name = $request->name;
+        $respuesta->calle = $request->calle;
+        $respuesta->save();
+    }
+
+    return $respuesta;
+}
 
 }

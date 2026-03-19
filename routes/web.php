@@ -128,3 +128,5 @@ Route::get('obtenerestatus', function(){
     dd($post->is_active);
 
 });
+// El siguiente método se debe de llamar mediante un método de tipo request (por ejemplo, utilizando AJAX o Postman)
+Route::put('/actualizar-dato/{id}', [HomeController::class, 'update'])->name('dato.update');
