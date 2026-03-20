@@ -130,3 +130,9 @@ Route::get('obtenerestatus', function(){
 });
 // El siguiente método se debe de llamar mediante un método de tipo request (por ejemplo, utilizando AJAX o Postman)
 Route::put('/actualizar-dato/{id}', [HomeController::class, 'update'])->name('dato.update');
+
+// Se añade la ruta para eliminación lógica
+Route::delete('/paginas/{id}/eliminacion-logica', [HomeController::class, 'eliminacion_logica'])->name('paginas.eliminacion-logica');
+
+//Se añade la ruta para eliminación física
+Route::delete('/paginas/{id}/eliminacion-fisica', [HomeController::class, 'eliminacion_fisica'])->name('paginas.eliminacion-fisica');

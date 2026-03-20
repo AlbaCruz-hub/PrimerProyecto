@@ -189,4 +189,46 @@ $("#editForm").on('submit', function(e){
         }
     })
 });
+
+function eliminacion_logica(id) {
+    if (confirm("¿Estás seguro de que deseas inactivar el usuario registrado?")) {
+        $.ajax({
+            url: '/paginas/' + id + '/eliminacion-logica',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                _method: 'DELETE'
+            },
+            success: function(response) {
+                alert(response.message);
+                location.reload();
+            },
+            error: function(xhr) {
+                console.log(xhr.responseText);
+                alert('Error al inactivar');
+            }
+        });
+    }
+}
+
+function eliminacion_fisica(id) {
+    if (confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
+        $.ajax({
+            url: '/paginas/' + id + '/eliminacion-fisica',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                _method: 'DELETE'
+            },
+            success: function(response) {
+                alert(response.message);
+                location.reload();
+            },
+            error: function(xhr) {
+                console.log(xhr.responseText);
+                alert('Error al eliminar');
+            }
+        });
+    }
+}
 </script>

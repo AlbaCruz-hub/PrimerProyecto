@@ -50,6 +50,7 @@
                 <th>Email</th>
                 <th>Telefono</th>
                 <th>Calle</th>
+                <th>Estatus</th> 
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -60,16 +61,33 @@
                 <td>{{$usuario->email}}</td>
                 <td>{{$usuario->telefono}}</td>
                 <td>{{$usuario->calle}}</td>
+                 <td>
+                 @if($usuario->is_active == 1)
+                 <span class="badge bg-success">Activo</span>
+                 @else
+                        <span class="badge bg-danger">Inactivo</span>
+                @endif
+             </td>
                 <td>
                 <button class='btn btn-primary' 
                  onclick="carga_modal({{$usuario->id}}, '{{$usuario->name}}', '{{$usuario->calle}}')" 
                 data-id="{{$usuario->id}}" 
                 data-nombre="{{$usuario->name}}" 
-                 data-calle="{{$usuario->calle}}" 
+                data-calle="{{$usuario->calle}}" 
                 data-bs-toggle="modal" 
                 data-bs-target="#myModal">
-                <span class="fa fa-pencil"></span>
+                <span class="fa fa-pencil"></span> Editar
                  </button>
+                <!-- Botón para inactivar registro -->
+                <button class='btn btn-warning' 
+               onclick="eliminacion_logica({{$usuario->id}})">
+              <span class="fa fa-eye-slash"></span> Inactivar
+             </button>
+               <!-- Botón para eliminar registro -->
+           <button class='btn btn-danger' 
+           onclick="eliminacion_fisica({{$usuario->id}})">
+             <span class="fa fa-trash"></span> Eliminar
+         </button>
                 </td>
             </tr>
         @endforeach
