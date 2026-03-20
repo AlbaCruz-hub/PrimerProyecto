@@ -113,21 +113,122 @@
     <i class="fa-brands fa-reddit"></i>
     <i class="fa-brands fa-tiktok"></i>
 </div>
+<div class="modal" tabindex="-1" id="myModal" role="dialog">
+    <form id="editForm" method="POST">
+        @csrf
+        @method("PUT")
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                
+                <div class="modal-header">
+                    <h5 class="modal-title">@yield('titulo_modal')</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
 
+                <div class="modal-body">
+                    <input type="hidden" name="id" id="id">
+                    <input type="text" name="name" id="name" class="form-control">
+                    <input type="text" name="calle" id="calle" class="form-control">
+                    <p>Modal body text goes here.</p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
 </body>
 </html>
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://cdn.datatables.net/2.3.7/js/dataTables.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    $(document).ready(function () {
-        $('#tablausuarios').DataTable({
-            columns: [
-                { data: 'name' },
-                { data: 'email' },
-                { data: 'telefono' },
-                { data: 'calle' }
+$(document).ready(function () {
+    $('#tablausuarios').DataTable({
+        columns: [
+            { data: 'name' },
+            { data: 'email' },
+            { data: 'telefono' },
+            { data: 'calle' },
+            { data: 'acciones' }
         ]
     });
 });
+
+function carga_modal(id, nombre, calle){
+    $("#id").val(id);
+    $("#name").val(nombre);
+    $("#calle").val(calle);
+    $("#editForm").attr('action','/actualizar-dato/'+id);
+    var modal = new bootstrap.Modal(document.getElementById('myModal'));
+    modal.show();
+}
+
+$("#editForm").on('submit', function(e){
+    e.preventDefault();
+    alert($(this).serialize());
+
+    $.ajax({
+        url: $(this).attr('action'),
+        type: 'POST',
+        method: 'PUT',
+        data: $(this).serialize(),
+        success: function(response){
+            var modal = bootstrap.Modal.getInstance(document.getElementById('myModal'));
+            modal.hide();
+            location.reload();
+        },
+        error: function(xhr){
+            console.log(xhr.responseText);
+        }
+    })
+});
+
+function eliminacion_logica(id) {
+    if (confirm("¿Estás seguro de que deseas inactivar el usuario registrado?")) {
+        $.ajax({
+            url: '/paginas/' + id + '/eliminacion-logica',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                _method: 'DELETE'
+            },
+            success: function(response) {
+                alert(response.message);
+                location.reload();
+            },
+            error: function(xhr) {
+                console.log(xhr.responseText);
+                alert('Error al inactivar');
+            }
+        });
+    }
+}
+
+function eliminacion_fisica(id) {
+    if (confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
+        $.ajax({
+            url: '/paginas/' + id + '/eliminacion-fisica',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                _method: 'DELETE'
+            },
+            success: function(response) {
+                alert(response.message);
+                location.reload();
+            },
+            error: function(xhr) {
+                console.log(xhr.responseText);
+                alert('Error al eliminar');
+            }
+        });
+    }
+}
 </script>

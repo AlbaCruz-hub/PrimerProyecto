@@ -26,6 +26,35 @@ class HomeController extends Controller
         return view('empresa', $datos);
     }
 
+public function update(Request $request){
+    $usuarios = new Pagina();
+    $respuesta = $usuarios->BuscarId($request->id);
 
+    if(!empty($respuesta)){
+        $respuesta->name = $request->name;
+        $respuesta->calle = $request->calle;
+        $respuesta->save();
+    }
 
+    return $respuesta;
 }
+  // Se añade el método para eliminación lógica
+    public function eliminacion_logica($id)
+    {
+        $pagina = Pagina::findOrFail($id);
+        $pagina->is_active = 0; 
+        $pagina->save();
+
+        return response()->json(['message' => 'El registro ha sido desactivado.']);
+    }
+
+    // Se añade el método para eliminación física
+    public function eliminacion_fisica($id)
+    {
+        $pagina = Pagina::findOrFail($id);
+        $pagina->delete(); 
+
+        return response()->json(['message' => 'El registro ha sido borrado permanentemente.']);
+    }
+}
+
